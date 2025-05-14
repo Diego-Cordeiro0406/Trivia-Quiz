@@ -1,26 +1,38 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { FormFields } from "../Types";
 
 export default function LoginForm() {
-  const [playerData, setplayerData] = useState<string>('');
+  const [formData, setFormData] = useState<FormFields>({
+    name: '',
+    email: '',
+   });
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const novoValor = e.target.value;
-    setplayerData(novoValor)
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+       ...prevFormData,
+       [name]: value,
+    }));
    };
 
-  const handleClick = async (e:React.FormEvent<HTMLFormElement>) => {
+   const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const response = await fetch('https://opentdb.com/api.php?amount=10');
-      const jsonData = await response.json();
-      console.log(jsonData)
+      localStorage.setItem('playerData', JSON.stringify(formData))
+      navigate('/play')
     } catch (error) {
       console.log(error);
     }
   };
 
+  const validate = formData.name.length > 2 && formData
+    .email.includes('@') && formData.email.endsWith('.com')
+
   return (
-    <form>
+    <form onSubmit={ handleSubmit }>
       <div>
         <input
           data-testid="input-player-name"
@@ -28,11 +40,33 @@ export default function LoginForm() {
           id="input-name"
           type="text"
           placeholder="nome"
-          value={ playerData }
+          value={ formData.name }
+          onChange={ handleInputChange }
+        />
+        <input
+          data-testid="input-gravatar-email"
+          name="email"
+          id="input-email"
+          type="text"
+          placeholder="email"
+          value={ formData.email }
           onChange={ handleInputChange }
         />
       </div>
-      {/* <button onClick={ handleClick }>jogar</button> */}
+      <button
+        type="submit"
+        data-testid="btn-play"
+        disabled={!validate}
+      >
+        jogar
+      </button>
+      <button
+        type="button"
+        data-testid="btn-settings"
+        onClick={ () => navigate('/settings') }
+      >
+        configurações
+      </button>
     </form>
   )
 }
