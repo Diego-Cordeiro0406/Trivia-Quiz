@@ -5,9 +5,11 @@ import { MD5 } from "crypto-js"
 export default function Header() {
   const [playerData, setPlayerData] = useState<FormFields>({
     name: '',
-    email: ''
+    email: '',
+    score: 0
   })
   const [avatar, setAvatar] = useState('');
+
   useEffect(() => {
     const data = localStorage.getItem('playerData')
     if (data) {
@@ -18,6 +20,15 @@ export default function Header() {
     }
     
   }, [])
+
+
+  // useEffect(() => {
+  //   const storageData = localStorage.getItem('playerData');
+  //   if (storageData) {
+  //     setPlayerData(JSON.parse(storageData));
+  //   }
+  // }, []);
+
   return (
     <section>
       <div>
@@ -27,7 +38,7 @@ export default function Header() {
           alt="player-avatar"
         />
         <p data-testid="header-player-name">{playerData.name}</p>
-        <p data-testid="header-score">placar: 0</p>
+        <p data-testid="header-score">{`placar: ${playerData.score}`}</p>
       </div>
     </section>
   )

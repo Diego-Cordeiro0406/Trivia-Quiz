@@ -1,11 +1,13 @@
 export type FormFields = {
   name: string;
   email: string;
+  score: number;
 }
 
-export type QuizResponse = {
+export type QuizTokenResponse = {
   response_code: number;
-  results: QuizQuestion[];
+  response_message: string;
+  token: string;
 };
 
 export type QuizQuestion = {
