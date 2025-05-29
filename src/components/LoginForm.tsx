@@ -6,6 +6,7 @@ export default function LoginForm() {
   const [formData, setFormData] = useState<FormFields>({
     name: '',
     email: '',
+    score: 0
    });
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +23,9 @@ export default function LoginForm() {
     e.preventDefault()
     try {
       localStorage.setItem('playerData', JSON.stringify(formData))
+      const fetchToken = await fetch('https://tryvia.ptr.red/api_token.php?command=request')
+      const tokenResponse = await fetchToken.json()
+      localStorage.setItem('token', JSON.stringify({token: tokenResponse.token}))
       navigate('/play')
     } catch (error) {
       console.log(error);
