@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import type { Answer, QuizQuestion } from "../Types"
 import { useNavigate } from "react-router-dom"
+import Context from "../context/Context"
 
 export default function Play() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
@@ -9,6 +10,8 @@ export default function Play() {
   const [enableNext, setEnableNext] = useState(false)
   const [timer, setTimer] = useState<number>(30)
   const [isTimerActive, setIsTimerActive] = useState(true);
+
+  const context = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -20,7 +23,7 @@ export default function Play() {
         if (token) {
           const parsedToken = JSON.parse(token)
           const response = await fetch(
-          `https://tryvia.ptr.red/api.php?amount=10&token=${parsedToken.token}`
+          `https://tryvia.ptr.red/api.php?amount=5&token=${parsedToken.token}`
         )
           const data = await response.json()
           setQuestions(data.results)
@@ -81,6 +84,7 @@ export default function Play() {
     setEnableNext(false)
   }, [questions, currentIndex])
 
+
   // 3. Ir para a próxima pergunta
   const handleNext = useCallback(() => {
     const isLastQuestion = currentIndex >= questions.length - 1
@@ -99,30 +103,34 @@ export default function Play() {
     return ans.correct ? 'correct-answer' : 'wrong-answer';
   };
 
-  // function handleQuestion(answer: Answer, timer: number) {
-  //   const playerData = localStorage.getItem('playerData')
-  //   if (playerData) {
-  //     let score = 0;
-  //     const defaultScore = 10;
-  //     const difficulty = {
-  //       hard: 3,
-  //       medium: 2,
-  //       easy: 1,
-  //     };
+  if (!context) return null;
+  const {
+    setPlayerData
+  } = context;
 
-  //     if (answer.correct) {
-  //       score = defaultScore + (Number(timer) * Number(difficulty[answer.difficulty]));
-  //       const parsedPlayerData = JSON.parse(playerData)
-  //       console.log(parsedPlayerData)
-  //       const updatedPlayerData = {
-  //         ...parsedPlayerData,
-  //         score: parsedPlayerData.score + score
-  //       }
-  //       console.log(updatedPlayerData)
-  //       localStorage.setItem('playerData', JSON.stringify(updatedPlayerData))
-  //     }
-  //   }
-  // };
+  function handleQuestion(answer: Answer, timer: number) {
+    const playerData = localStorage.getItem('playerData')
+    if (playerData) {
+      let score = 0;
+      const defaultScore = 10;
+      const difficulty = {
+        hard: 3,
+        medium: 2,
+        easy: 1,
+      };
+
+      if (answer.correct) {
+        score = defaultScore + (Number(timer) * Number(difficulty[answer.difficulty]));
+        const parsedPlayerData = JSON.parse(playerData)
+        const updatedPlayerData = {
+          ...parsedPlayerData,
+          score: parsedPlayerData.score + score
+        }
+        setPlayerData(updatedPlayerData)
+        localStorage.setItem('playerData', JSON.stringify(updatedPlayerData))
+      }
+    }
+  };
 
 
   return (
@@ -144,7 +152,7 @@ export default function Play() {
                 onClick={() => {
                   setEnableNext(true)
                   setIsTimerActive(false)
-                  // handleQuestion(ans, timer)
+                  handleQuestion(ans, timer)
                 } } // Habilita o botão para ir para a próxima pergunta
                 data-testid={ans.correct ? "correct-answer" : `wrong-answer-${index}`}
                 className={ handleClassName(ans) }

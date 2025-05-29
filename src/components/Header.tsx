@@ -1,33 +1,22 @@
-import { useEffect, useState } from "react"
-import type { FormFields } from "../Types"
-import { MD5 } from "crypto-js"
+import { useContext, useEffect, } from "react"
+import Context from "../context/Context";
 
 export default function Header() {
-  const [playerData, setPlayerData] = useState<FormFields>({
-    name: '',
-    email: '',
-    score: 0
-  })
-  const [avatar, setAvatar] = useState('');
+const context = useContext(Context);
 
   useEffect(() => {
-    const data = localStorage.getItem('playerData')
-    if (data) {
-      const dataParsed = JSON.parse(data)
-      const avatarToHash = MD5(dataParsed.name).toString()
-      setAvatar(avatarToHash)
-      setPlayerData(dataParsed)
+    if (context) {
+      context.getPlayerDataFromStorage()
     }
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
-  // useEffect(() => {
-  //   const storageData = localStorage.getItem('playerData');
-  //   if (storageData) {
-  //     setPlayerData(JSON.parse(storageData));
-  //   }
-  // }, []);
+  if (!context) return null;
+  const {
+    playerData,
+    avatar,
+  } = context;
 
   return (
     <section>
