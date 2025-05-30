@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Play from "./pages/Play";
 import Settings from "./pages/Settings";
 import Header from "./components/Header";
+import Feedback from "./pages/Feedback";
 
 function App() {
   const location = useLocation();
@@ -12,12 +13,13 @@ function App() {
   return (
     <>
     {
-      location.pathname !== '/' && <Header />
+      location.pathname !== '/' && location.pathname !== '/feedback' && <Header />
     }
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/play" element={ <Play /> } />
         <Route path="/settings" element={ <Settings /> } />
+        <Route path="/feedback" element={ <Feedback /> } />
       </Routes>
     </>
   )

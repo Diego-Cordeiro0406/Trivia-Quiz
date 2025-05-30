@@ -2,6 +2,7 @@ export type FormFields = {
   name: string;
   email: string;
   score: number;
+  correctQuestions: number
 }
 
 export type QuizTokenResponse = {

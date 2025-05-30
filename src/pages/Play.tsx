@@ -124,7 +124,8 @@ export default function Play() {
         const parsedPlayerData = JSON.parse(playerData)
         const updatedPlayerData = {
           ...parsedPlayerData,
-          score: parsedPlayerData.score + score
+          score: parsedPlayerData.score + score,
+          correctQuestions: parsedPlayerData.correctQuestions + 1
         }
         setPlayerData(updatedPlayerData)
         localStorage.setItem('playerData', JSON.stringify(updatedPlayerData))

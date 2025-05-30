@@ -11,7 +11,8 @@ function Provider({ children }: MyProviderProps) {
   const [playerData, setPlayerData] = useState<FormFields>({
     name: '',
     email: '',
-    score: 0
+    score: 0,
+    correctQuestions: 0
   })
   const [avatar, setAvatar] = useState('');
 
