@@ -6,7 +6,8 @@ export default function LoginForm() {
   const [formData, setFormData] = useState<FormFields>({
     name: '',
     email: '',
-    score: 0
+    score: 0,
+    correctQuestions: 0
    });
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
