@@ -24,6 +24,19 @@ export default function LoginForm() {
     e.preventDefault()
     try {
       localStorage.setItem('playerData', JSON.stringify(formData))
+      // const players = localStorage.getItem('players')
+
+      //atualiza o localStorage a cada novo jogador.
+      // if (players) {
+      //   const verify = JSON.parse(players).map((player: FormFields) => player.email !== formData.email)
+      //   if(verify) {
+      //     const updatedPlayers = [...JSON.parse(players), formData]
+      //     localStorage.setItem('players', JSON.stringify(updatedPlayers))
+      //   }
+      // } else {
+      //   localStorage.setItem('players', JSON.stringify([formData]))
+      // }
+      // faz requisição de um token para as perguntas não se repetirem por um tempo.
       const fetchToken = await fetch('https://tryvia.ptr.red/api_token.php?command=request')
       const tokenResponse = await fetchToken.json()
       localStorage.setItem('token', JSON.stringify({token: tokenResponse.token}))

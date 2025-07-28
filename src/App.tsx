@@ -6,6 +6,7 @@ import Play from "./pages/Play";
 import Settings from "./pages/Settings";
 import Header from "./components/Header";
 import Feedback from "./pages/Feedback";
+import Ranking from "./pages/Ranking";
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
         <Route path="/play" element={ <Play /> } />
         <Route path="/settings" element={ <Settings /> } />
         <Route path="/feedback" element={ <Feedback /> } />
+        <Route path="/ranking" element={ <Ranking /> } />
       </Routes>
     </>
   )

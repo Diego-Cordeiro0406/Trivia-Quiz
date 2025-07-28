@@ -13,7 +13,7 @@ export default function Feedback() {
     const [avatar, setAvatar] = useState('');
 
     const navigate = useNavigate();
-
+    // pega os dados do jogador do localstorage ao montar o componente.
     useEffect(() => {
       const data = localStorage.getItem('playerData')
         if (data) {
